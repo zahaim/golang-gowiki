@@ -1,6 +1,7 @@
 package main
 
 import (
+    "fmt"
     "html/template"
     "io/ioutil"
     "net/http"
@@ -69,9 +70,14 @@ func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
   }
 }
 
+func sayHello(w http.ResponseWriter, r *http.Request) {
+  fmt.Fprintf(w, "Hi there, I love you %s!", r.URL.Path[:])
+}
+
 func main() {
   http.HandleFunc("/view/", viewHandler)
   http.HandleFunc("/edit/", editHandler)
   http.HandleFunc("/save/", saveHandler)
+  http.HandleFunc("/", sayHello)
   http.ListenAndServe(":8080", nil)
 }
